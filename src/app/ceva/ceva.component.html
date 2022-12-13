@@ -1,0 +1,93 @@
+<dx-diagram
+  id="diagram"
+  #diagram
+  customShapeTemplate="customShapeTemplate"
+  customShapeToolboxTemplate="customShapeToolboxTemplate"
+  (onRequestLayoutUpdate)="requestLayoutUpdateHandler($event)"
+>
+  <dxi-custom-shape
+    type="object"
+    baseType="rectangle"
+    category="object"
+    title="Technical Name"
+    [defaultWidth]="1.5"
+    [defaultHeight]="1"
+    [toolboxWidthToHeightRatio]="2"
+    [minWidth]="1.5"
+    [minHeight]="1"
+    [maxWidth]="3"
+    [maxHeight]="2"
+    [allowEditText]="false"
+    
+  >
+  </dxi-custom-shape>
+  <svg *dxTemplate="let item of 'customShapeTemplate'" class="template">
+    <text class="template-technical-name" x="50%" y="20%">
+      {{ item.dataItem ? item.dataItem.Technical_Name : "Technical Name" }}
+    </text>
+    <text class="template-description" x="50%" y="45%">
+      {{ item.dataItem ? item.dataItem.Description : "Object Description" }}
+    </text>
+
+    <path 
+    onclick="alert('hide line')"
+    class="template-button"
+    transform="translate(3,70) scale(0.05)"
+    d="M459.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4L288 214.3V256v41.7L459.5 440.6zM256 352V256 128 96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160C4.2 237.5 0 246.5 0 256s4.2 18.5 11.5 24.6l192 160c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V352z" />
+    
+    <path 
+    *ngIf="hasChildNodes(item.dataItem.ID)"
+    onclick="alert('show next line')"
+    class="template-button"
+    transform="translate(120,0) scale(0.05)"
+    d="M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z" />
+
+    <path
+   
+    onclick="alert('hide line')"
+    class="template-button"
+    transform="translate(10,0) scale(0.05)"
+    d="M9.4 278.6c-12.5-12.5-12.5-32.8 0-45.3l128-128c9.2-9.2 22.9-11.9 34.9-6.9s19.8 16.6 19.8 29.6l0 256c0 12.9-7.8 24.6-19.8 29.6s-25.7 2.2-34.9-6.9l-128-128z" />
+
+    <path 
+    *ngIf="hasChildNodes(item.dataItem.ID)"
+    onclick="alert('show next line')"
+    class="template-button"
+    transform="translate(115,70) scale(0.05)"
+    d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416V96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4L224 214.3V256v41.7L52.5 440.6zM256 352V256 128 96c0-12.4 7.2-23.7 18.4-29s24.5-3.6 34.1 4.4l192 160c7.3 6.1 11.5 15.1 11.5 24.6s-4.2 18.5-11.5 24.6l-192 160c-9.5 7.9-22.8 9.7-34.1 4.4s-18.4-16.6-18.4-29V352z"/>
+ 
+
+  </svg>
+
+  <svg *dxTemplate="let item of 'customShapeToolboxTemplate'" class="template">
+    <text x="50%" y="40%">New</text>
+    <text x="50%" y="70%">Object</text>
+  </svg>
+  <dxo-nodes
+    [dataSource]="dataSource"
+    keyExpr="ID"
+    [typeExpr]="itemTypeExpr"
+    [customDataExpr]="itemCustomDataExpr"
+    parentKeyExpr="Head_ID"
+  >
+    <dxo-auto-layout type="tree" orientation="horizontal"></dxo-auto-layout>
+  </dxo-nodes>
+  <dxo-context-toolbox [width]="100" [shapeIconsPerRow]="1">
+  </dxo-context-toolbox>
+  <dxo-toolbox [showSearch]="false" [shapeIconsPerRow]="1">
+    <dxi-group
+      category="object"
+      title="Object"
+      [expanded]="true"
+    ></dxi-group>
+  </dxo-toolbox>
+  <dxo-properties-panel>
+    <dxi-tab>
+      <dxi-group
+        title="Page Properties"
+        [commands]="['pageSize', 'pageOrientation', 'pageColor']"
+      ></dxi-group>
+    </dxi-tab>
+  </dxo-properties-panel>
+</dx-diagram>
+
