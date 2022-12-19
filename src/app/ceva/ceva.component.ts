@@ -3,7 +3,8 @@ import { DxDiagramComponent } from 'devextreme-angular';
 import ArrayStore from 'devextreme/data/array_store';
 import { Service, SapObject } from './ceva.service';
 
-if (!/localhost/.test(document.location.host)) {
+if (!/localhost/.test(document.location.host))
+{
   enableProdMode();
 }
 
@@ -15,9 +16,10 @@ if (!/localhost/.test(document.location.host)) {
   preserveWhitespaces: true,
 })
 
-export class CevaComponent {
-  @ViewChild(DxDiagramComponent, { static: false }) 
-  
+export class CevaComponent
+{
+  @ViewChild(DxDiagramComponent, { static: false })
+
   diagram: DxDiagramComponent | undefined;
 
   currentObject: Object = new SapObject();
@@ -30,13 +32,19 @@ export class CevaComponent {
 
   generatedID = 100;
 
-  constructor(service: Service) {
+  public NodesCount: number;
+  public IsFullScreen: boolean = false;
+
+  constructor(service: Service)
+  {
     const that = this;
     this.objects = service.getObjects();
+    this.NodesCount = this.objects.length;
     this.dataSource = new ArrayStore({
       key: 'ID',
       data: this.objects,
-      onInserting(values) {
+      onInserting(values)
+      {
         values.ID = values.ID || that.generatedID++;
         values.Technical_Name = values.Technical_Name || "Object's Name";
       },
@@ -45,12 +53,15 @@ export class CevaComponent {
 
   isButtonVisible: boolean = false;
 
-  itemTypeExpr(obj: any) {
+  itemTypeExpr(obj: any)
+  {
     return 'object';
   }
 
-  itemCustomDataExpr(obj: SapObject, value: any) {
-    if (value === undefined) {
+  itemCustomDataExpr(obj: SapObject, value: any)
+  {
+    if (value === undefined)
+    {
       return {
         Technical_Name: obj.Technical_Name,
         Description: obj.Description,
@@ -60,29 +71,40 @@ export class CevaComponent {
     obj.Technical_Name = value.Technical_Name;
     obj.Description = value.Description;
     obj.Image = value.Image;
-   return obj;
+    return obj;
   }
 
-  requestLayoutUpdateHandler(e: { changes: string | any[]; allowed: boolean; }) {
-    for (let i = 0; i < e.changes.length; i++) {
+  requestLayoutUpdateHandler(e: { changes: string | any[]; allowed: boolean; })
+  {
+    for (let i = 0; i < e.changes.length; i++)
+    {
       if (e.changes[i].type === 'remove') { e.allowed = true; } else if (e.changes[i].data.Head_ID !== undefined && e.changes[i].data.Head_ID !== null) { e.allowed = true; }
     }
   }
 
-  editObject(objects: SapObject) {
+  editObject(objects: SapObject)
+  {
     this.currentObject = { ...objects };
     this.popupVisible = true;
   }
 
-  deleteObject(objects: { ID: any; }) {
+  deleteObject(objects: { ID: any; })
+  {
     this.dataSource.push([{ type: 'remove', key: objects.ID }]);
   }
 
-  cancelEditEmployee() {
+  cancelEditEmployee()
+  {
     this.currentObject = new SapObject();
   }
 
-  hasChildNodes(id: number): boolean{
+  hasChildNodes(id: number): boolean
+  {
     return this.objects.some(x => x.Head_ID === id);
+  }
+
+  public onFullScreen(e: any): void
+  {
+    this.IsFullScreen = true;
   }
 }
